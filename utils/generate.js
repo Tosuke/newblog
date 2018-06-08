@@ -24,6 +24,10 @@ async function main() {
 
   tasks.push(promisify(fs.writeFile)('posts.json', JSON.stringify(posts), 'utf8'))
   
+  if (!await promisify(fs.exists)('assets/posts')) {
+    await promisify(fs.mkdir)('assets/posts')
+  }
+
   for(const post of posts) {
     console.log(post.fields.slug)
     tasks.push(promisify(fs.writeFile)(`assets/posts/${post.fields.slug}.md`, post.fields.body, 'utf8'))
