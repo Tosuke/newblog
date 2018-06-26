@@ -50,7 +50,7 @@ export default {
 
     return {
       title: entry.fields.title,
-      tags: [...entry.fields.tags, 'hogepiyo'],
+      tags: entry.fields.tags,
       createdAt: entry.sys.createdAt,
       slug
     }
