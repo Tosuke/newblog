@@ -3,9 +3,7 @@
     <div class="container">
       <header class="post-header">
         <h1 class="title is-2">{{ title }}</h1>
-        <template v-for="tag in tags">
-          <span :key="tag" class="tag is-primary">{{ tag }}</span>
-        </template>
+        <Tag v-for="tag in tags" :key="tag" :name="tag"/>
       </header>
       <div class="content">
         <Content :id="slug"/>
@@ -16,14 +14,19 @@
 
 <script>
 import Content from '~/components/Content.vue'
+import Tag from '~/components/Tag.vue'
 import client from '~/plugins/contentful'
 
 export default {
   components: {
-    Content
+    Content, Tag
   },
-  async asyncData(ctx) {
-    const slug = ctx.route.params.slug
+  async asyncData({ params, ...ctx}) {
+    const slug = params.slug
+    if (!slug) {
+      ctx.redirect('/')
+    }
+
     const entries = await client.getEntries({
       content_type: 'post',
       order: 'sys.createdAt',
@@ -47,7 +50,7 @@ export default {
 
     return {
       title: entry.fields.title,
-      tags: entry.fields.tags,
+      tags: [...entry.fields.tags, 'hogepiyo'],
       createdAt: entry.sys.createdAt,
       slug
     }
@@ -55,7 +58,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .post-header {
   margin: 1rem;
   padding-bottom: 0.2rem;

@@ -15,16 +15,13 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "@nuxtjs/bulma": "^1.2.0",
     "bulma": "^0.7.1",
     "contentful": "^6.1.1",
     "dotenv": "^6.0.0",
     "dotenv-safe": "^5.0.1",
     "markdown-it": "^8.4.1",
     "markdown-it-emoji": "^1.4.0",
-    "milligram": "^1.3.0",
-    "nuxt-edge": "^2.0.0-25464797.8acef8d",
-    "purecss": "^1.0.0"
+    "nuxt-edge": "^2.0.0-25494410.e993616"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
