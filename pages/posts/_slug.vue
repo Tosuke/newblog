@@ -18,7 +18,6 @@ import client from '~/plugins/contentful'
 
 export default {
   components: {
-    Content,
     Tag
   },
   async asyncData({ params, ...ctx }) {
