@@ -6,53 +6,43 @@
         <Tag v-for="tag in tags" :key="tag" :name="tag"/>
       </header>
       <div class="content">
-        <Content :id="slug"/>
+        <component :is="component"/>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import Content from '~/components/Content.vue'
 import Tag from '~/components/Tag.vue'
 import client from '~/plugins/contentful'
 
 export default {
   components: {
-    Content, Tag
+    Content,
+    Tag
   },
-  async asyncData({ params, ...ctx}) {
+  async asyncData({ params, ...ctx }) {
     const slug = params.slug
     if (!slug) {
       ctx.redirect('/')
     }
+    
+    const component = import(`~/assets/posts/${slug}.md`).catch(() => {})
+    const entry = await import(`~/assets/posts/${slug}.json`).catch(() => {})
 
-    const entries = await client.getEntries({
-      content_type: 'post',
-      order: 'sys.createdAt',
-      'fields.slug': slug,
-      select: [
-        'sys.createdAt',
-        'fields.author',
-        'fields.title',
-        'fields.tags',
-        'fields.heroImage'
-      ].join(',')
-    })
-    if (entries.items.length === 0) {
+    if (!entry) {
       ctx.error({
         statusCode: 404
       })
       return
     }
 
-    const entry = entries.items[0]
-
     return {
       title: entry.fields.title,
       tags: entry.fields.tags,
       createdAt: entry.sys.createdAt,
-      slug
+      slug,
+      component: () => component
     }
   }
 }

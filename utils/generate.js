@@ -4,6 +4,7 @@ import fs from 'fs'
 import util from 'util'
 
 const promisify = util.promisify
+const writeFile = promisify(fs.writeFile)
 
 dotenv.config()
 
@@ -30,7 +31,20 @@ async function main() {
 
   for(const post of posts) {
     console.log(post.fields.slug)
-    tasks.push(promisify(fs.writeFile)(`assets/posts/${post.fields.slug}.md`, post.fields.body, 'utf8'))
+    tasks.push(writeFile(`assets/posts/${post.fields.slug}.md`, post.fields.body, 'utf8'))
+    const postObj = {
+      sys: {
+        createdAt: post.sys.createdAt
+      },
+      fields: {
+        title: post.fields.title,
+        tags: post.fields.tags,
+        author: post.fields.author,
+        heroImage: post.fields.heroImage,
+        description: post.fields.description
+      }
+    }
+    tasks.push(writeFile(`assets/posts/${post.fields.slug}.json`, JSON.stringify(postObj), 'utf8'))
   }
 
   await Promise.all(tasks)
