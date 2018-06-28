@@ -26,7 +26,6 @@ export default {
       ctx.redirect('/')
     }
     
-    const component = import(`~/assets/posts/${slug}.md`).catch(() => {})
     const entry = await import(`~/assets/posts/${slug}.json`).catch(() => {})
 
     if (!entry) {
@@ -41,11 +40,17 @@ export default {
       tags: entry.fields.tags,
       createdAt: entry.sys.createdAt,
       slug,
-      component: () => component
+    }
+  },
+  data() {
+    return {
+      component: () => import(`~/assets/posts/${this.$route.params.slug}.md`)
     }
   }
 }
 </script>
+
+<style src="prismjs/themes/prism-tomorrow.css"/>
 
 <style scoped>
 .post-header {
@@ -55,4 +60,22 @@ export default {
 }
 </style>
 
-
+<style>
+pre[class*="language-"] .tag,
+pre[class*="language-"] .number {
+  align-items: stretch;
+  background-color: transparent;
+  border-radius: 0;
+  display: inline;
+  font-size: 1em;
+  height: auto;
+  justify-content: flex-start;
+  line-height: normal;
+  padding: 0;
+  white-space: pre;
+  margin-right: 0;
+  min-width: auto;
+  text-align: left;
+  vertical-align: baseline;
+}
+</style>
