@@ -1,5 +1,4 @@
 import dotenv from 'dotenv'
-import Critters from 'critters-webpack-plugin'
 dotenv.config()
 
 export default {
