@@ -1,3 +1,4 @@
+require = require('esm')(module)
 const md = require('./markdown').default
 
 module.exports = function(src) {
