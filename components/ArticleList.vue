@@ -4,9 +4,9 @@
       <div :key="post.sys.id" class="card article">
         <div class="card-content">
           <div class="container">
-            <nuxt-link :to="`/posts/${post.fields.slug}`">
+            <turbo-link :to="`/posts/${post.fields.slug}`">
               <h1 class="card-header-title title">{{ post.fields.title }}</h1>
-            </nuxt-link>
+            </turbo-link>
             <Tag v-for="tag in post.fields.tags" :key="tag" :name="tag"/>
             <div class="content">
               <p class="subtitle">{{ post.fields.description }}</p>
@@ -20,10 +20,12 @@
 
 <script>
 import Tag from '~/components/Tag.vue'
+import TurboLink from '~/components/TurboLink.vue'
 
 export default {
   components: {
-    Tag
+    Tag,
+    TurboLink
   },
   props: ['posts']
 }

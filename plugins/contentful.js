@@ -12,9 +12,10 @@ export const defaultPostQuery = {
   select: [
     'sys.createdAt',
     'fields.title',
+    'fields.slug',
     'fields.tags',
     'fields.author',
     'fields.heroImage',
     'fields.description'
-  ]
+  ].join(',')
 }

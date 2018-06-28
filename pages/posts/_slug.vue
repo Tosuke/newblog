@@ -15,6 +15,7 @@
 <script>
 import Tag from '~/components/Tag.vue'
 import client from '~/plugins/contentful'
+import { get } from '~/plugins/contentCache'
 
 export default {
   components: {
@@ -26,7 +27,7 @@ export default {
       ctx.redirect('/')
     }
     
-    const entry = await import(`~/assets/posts/${slug}.json`).catch(() => {})
+    const entry = await get(slug).meta.catch(() => {})
 
     if (!entry) {
       ctx.error({
@@ -44,7 +45,7 @@ export default {
   },
   data() {
     return {
-      component: () => import(`~/assets/posts/${this.$route.params.slug}.md`)
+      component: get(this.$route.params.slug).component
     }
   }
 }
