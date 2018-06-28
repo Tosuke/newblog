@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import Critters from 'critters-webpack-plugin'
 dotenv.config()
 
 export default {
@@ -14,11 +15,11 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
+      /*{
         rel: 'stylesheet',
         href:
           '//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic'
-      }
+      }*/
     ]
   },
   /*
@@ -26,14 +27,14 @@ export default {
   */
   loading: { color: '#3B8070' },
 
-  css: ['bulma'],
+  css: ['bulma', '~/assets/css/font.css'],
 
   env: process.env,
   /*
   ** Build configuration
   */
   build: {
-    cache: true,
+    // cache: true,
     parallel: true,
     /*
     ** Run ESLint on save
@@ -53,7 +54,7 @@ export default {
         test: /\.md$/,
         use: ['vue-loader', require.resolve('./utils/markdownLoader')]
       })
-    }
+    },
   },
 
   generate: {

@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "NotoSansCJKjp-tosuke";
+  font-style: normal;
+  font-weight: 400;
+  font-display: optional;
+  src: local("NotoSansCJKjp-Regular.otf"),
+    local("NotoSansJP-Regular.otf"),
+    url("~/assets/fonts/NotoSansCJKjp-Regular.tosuke.woff2") format("woff2"),
+    url("~/assets/fonts/NotoSansCJKjp-Regular.tosuke.woff") format("woff");
+}
+
+@font-face {
+  font-family: "NotoSansCJKjp-tosuke";
+  font-style: normal;
+  font-weight: 700;
+  font-display: optional;
+  src: local("NotoSansCJKjp-Bold.otf"),
+    local("NotoSansJP-Bold.otf"),
+    url("~/assets/fonts/NotoSansCJKjp-Bold.tosuke.woff2") format("woff2"),
+    url("~/assets/fonts/NotoSansCJKjp-Bold.tosuke.woff") format("woff");
+}
+
+
+body {
+  font-family: "Noto Sans", "Noto Sans CJK JP", "NotoSansCJKjp-tosuke", sans-serif
+}
