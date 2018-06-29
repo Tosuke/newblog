@@ -1,5 +1,5 @@
 export default function(md, options) {
-  md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
+  md.renderer.rules.link_open = (tokens, idx, opts, env, self) => {
     const token = tokens[idx]
     const hrefIdx = token.attrIndex('href')
     if (hrefIdx >= 0) {
@@ -13,7 +13,7 @@ export default function(md, options) {
         tokens = toNuxtLink(tokens, idx)
       }
     }
-    return self.renderToken(tokens, idx, options)
+    return self.renderToken(tokens, idx, opts, env, self)
   }
 }
 
