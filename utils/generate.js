@@ -84,13 +84,17 @@ function sanitizePost(post) {
 }
 
 function generateAtomEntry(post) {
+  const padding = (n) => ('0000' + n).slice(-2)
+
   const root = `https://${process.env.HOST}`
-  const id = `tag:${process.env.HOST},${post.sys.createdAt}:${post.fields.slug}`
+  const createdAt = new Date(post.sys.createdAt)
+  const date = `${createdAt.getFullYear()}-${padding(createdAt.getMonth())}-${padding(createdAt.getDay())}`
+  const id = `tag:${process.env.HOST},${date}:${post.fields.slug}`
 
   return `
 <entry>
   <title>${post.fields.title}</title>
-  <link href="${root}/posts/${post.fields.slug}" rel="alternate"/>
+  <link rel="alternate" href="${root}/posts/${post.fields.slug}"/>
   <id>${id}</id>
   <published>${post.sys.createdAt}</published>
   <updated>${post.sys.updatedAt}</updated>
@@ -105,8 +109,10 @@ function generateAtomFeed(entries, aurhorName, updatedAt) {
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <title>${process.env.TITLE}</title>
   <subtitle>${process.env.SUBTITLE}</subtitle>
-  <link href="${root}" rel="alternate"/>
+  <link rel="alternate" href="${root}"/>
+  <link rel="self" type="application/atom+xml" href="${root}/feed/atom.xml"/>
   <author><name>${aurhorName}</name></author>
+  <id>tag:${process.env.HOST},2018:feed</id>
   <updated>${updatedAt}</updated>
 
   ${entries.join('')}
