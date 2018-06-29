@@ -53,7 +53,7 @@ export default {
       {
         rel: 'alternate',
         type: 'application/atom+xml',
-        title: process.env.TITLE,
+        title: settings.title,
         href: '/feed/atom.xml'
       }
     ]
