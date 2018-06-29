@@ -8,8 +8,13 @@
               <h1 class="card-header-title title">{{ post.fields.title }}</h1>
             </turbo-link>
             <Tag v-for="tag in post.fields.tags" :key="tag" :name="tag"/>
-            <div class="content">
-              <p class="subtitle">{{ post.fields.summary }}</p>
+            <div class="media">
+              <figure v-if="post.fields.heroImage" class="media-left image square">
+                <contentful-image :file="post.fields.heroImage" sizes="6rem"/>
+              </figure>
+              <div class="media-content content">
+                <p class="subtitle">{{ post.fields.summary }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -21,11 +26,13 @@
 <script>
 import Tag from '~/components/Tag.vue'
 import TurboLink from '~/components/TurboLink.vue'
+import ContentfulImage from '~/components/ContentfulImage.vue'
 
 export default {
   components: {
     Tag,
-    TurboLink
+    TurboLink,
+    ContentfulImage
   },
   props: ['posts']
 }
@@ -34,5 +41,9 @@ export default {
 <style scoped>
 .article {
   margin: 3rem 0;
+}
+.square {
+  width: 6rem;
+  height: 6rem;
 }
 </style>
