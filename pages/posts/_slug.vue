@@ -26,7 +26,7 @@ export default {
     if (!slug) {
       ctx.redirect('/')
     }
-    
+
     const entry = await get(slug).meta.catch(() => {})
 
     if (!entry) {
@@ -38,14 +38,49 @@ export default {
 
     return {
       title: entry.fields.title,
+      summary: entry.fields.summary,
       tags: entry.fields.tags,
       createdAt: entry.sys.createdAt,
-      slug,
+      heroImage: entry.fields.heroImage,
+      slug
     }
   },
   data() {
     return {
       component: get(this.$route.params.slug).component
+    }
+  },
+  head() {
+    return {
+      title: this.title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.summary
+        },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: `${this.title} | ${process.env.title}`
+        },
+        { hid: 'og:type', property: 'og:type', content: 'article' },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `https://${process.env.HOST}/posts/${this.slug}`
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.summary
+        },
+        ...(this.heroImage ? [{
+          hid: 'og:image',
+          property: 'og:image',
+          content: 'https:' + this.heroImage.fields.file.url
+        }] : [])
+      ]
     }
   }
 }
@@ -62,8 +97,8 @@ export default {
 </style>
 
 <style>
-pre[class*="language-"] .tag,
-pre[class*="language-"] .number {
+pre[class*='language-'] .tag,
+pre[class*='language-'] .number {
   align-items: stretch;
   background-color: transparent;
   border-radius: 0;

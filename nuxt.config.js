@@ -1,19 +1,61 @@
 import dotenv from 'dotenv-safe'
 dotenv.config()
 
+const settings = {
+  title: "Tosuke's blog",
+  subtitle: '役に立(つ/たない)技術情報やポエム',
+  siteName: 'tosukeblog'
+}
+
 export default {
   /*
   ** Headers of the page
   */
   head: {
-    title: 'blog',
+    title: settings.title,
+    titleTemplate: `%s | ${settings.title}`,
+    htmlAttrs: {
+      lang: 'ja',
+      prefix:
+        'og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#'
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Tosuke&apos;s blog' }
+      { hid: 'description', name: 'description', content: settings.subtitle },
+
+      // OGP
+      { property: 'og:site_name', content: settings.siteName },
+      { property: 'og:locale', content: 'ja_JP' },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: `${settings.title} | ${settings.subtitle}`
+      },
+      { hid: 'og:type', property: 'og:type', content: 'website' },
+      {
+        hid: 'og:url',
+        property: 'og:url',
+        content: `https://${process.env.HOST}`
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: settings.subtitle
+      },
+
+      // Twitter
+      { property: 'twitter:card', content: 'summary' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      // atom.xml
+      {
+        rel: 'alternate',
+        type: 'application/atom+xml',
+        title: process.env.TITLE,
+        href: '/feed/atom.xml'
+      }
     ]
   },
   /*
@@ -23,7 +65,10 @@ export default {
 
   css: ['bulma', '~/assets/css/font.css'],
 
-  env: process.env,
+  env: {
+    ...process.env,
+    ...settings
+  },
 
   /*
   ** Router configuration

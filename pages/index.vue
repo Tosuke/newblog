@@ -18,6 +18,11 @@ export default {
     return {
       posts: items
     }
+  },
+  head() {
+    return {
+      titleTemplate: '%s'
+    }
   }
 }
 </script>
