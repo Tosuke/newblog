@@ -90,7 +90,7 @@ function generateAtomEntry(post) {
   return `
 <entry>
   <title>${post.fields.title}</title>
-  <link rel="${root}/posts/${post.fields.slug}" rel="alternate"/>
+  <link href="${root}/posts/${post.fields.slug}" rel="alternate"/>
   <id>${id}</id>
   <published>${post.sys.createdAt}</published>
   <updated>${post.sys.updatedAt}</updated>
@@ -105,7 +105,7 @@ function generateAtomFeed(entries, aurhorName, updatedAt) {
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <title>${process.env.TITLE}</title>
   <subtitle>${process.env.SUBTITLE}</subtitle>
-  <link rel="${root}" rel="alternate"/>
+  <link href="${root}" rel="alternate"/>
   <author><name>${aurhorName}</name></author>
   <updated>${updatedAt}</updated>
 
