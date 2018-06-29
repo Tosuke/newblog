@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv-safe'
 dotenv.config()
 
 export default {
@@ -14,11 +14,6 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-      /*{
-        rel: 'stylesheet',
-        href:
-          '//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic'
-      }*/
     ]
   },
   /*
