@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from './env'
 import * as contentful from 'contentful'
 import fs from 'fs'
 import util from 'util'

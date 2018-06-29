@@ -17,8 +17,8 @@
 export default {
   data() {
     return {
-      title: process.env.title,
-      subtitle: process.env.subtitle
+      title: process.env.TITLE,
+      subtitle: process.env.SUBTITLE
     }
   }
 }

@@ -1,19 +1,13 @@
-import dotenv from 'dotenv-safe'
+import dotenv from './utils/env'
 dotenv.config()
-
-const settings = {
-  title: "Tosuke's blog",
-  subtitle: '役に立(つ/たない)技術情報やポエム',
-  siteName: 'tosukeblog'
-}
 
 export default {
   /*
   ** Headers of the page
   */
   head: {
-    title: settings.title,
-    titleTemplate: `%s | ${settings.title}`,
+    title: process.env.TITLE,
+    titleTemplate: `%s | ${process.env.TITLE}`,
     htmlAttrs: {
       lang: 'ja',
       prefix:
@@ -22,15 +16,15 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: settings.subtitle },
+      { hid: 'description', name: 'description', content: process.env.SUBTITLE },
 
       // OGP
-      { property: 'og:site_name', content: settings.siteName },
+      { property: 'og:site_name', content: process.env.SITENAME },
       { property: 'og:locale', content: 'ja_JP' },
       {
         hid: 'og:title',
         property: 'og:title',
-        content: `${settings.title} | ${settings.subtitle}`
+        content: `${process.env.TITLE} | ${process.env.SUBTITLE}`
       },
       { hid: 'og:type', property: 'og:type', content: 'website' },
       {
@@ -41,7 +35,7 @@ export default {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: settings.subtitle
+        content: process.env.SUBTITLE
       },
 
       // Twitter
@@ -53,7 +47,7 @@ export default {
       {
         rel: 'alternate',
         type: 'application/atom+xml',
-        title: settings.title,
+        title: process.env.TITLE,
         href: '/feed/atom.xml'
       }
     ]
@@ -65,10 +59,7 @@ export default {
 
   css: ['bulma', '~/assets/css/font.css'],
 
-  env: {
-    ...process.env,
-    ...settings
-  },
+  env: process.env,
 
   /*
   ** Router configuration

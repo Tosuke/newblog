@@ -14,4 +14,4 @@ dist
 /posts.json
 
 # Environmental Variables
-.env
+.env.local

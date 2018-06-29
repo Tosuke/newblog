@@ -62,7 +62,7 @@ export default {
         {
           hid: 'og:title',
           property: 'og:title',
-          content: `${this.title} | ${process.env.title}`
+          content: `${this.title} | ${process.env.TITLE}`
         },
         { hid: 'og:type', property: 'og:type', content: 'article' },
         {
