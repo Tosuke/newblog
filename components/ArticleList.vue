@@ -9,7 +9,7 @@
             </turbo-link>
             <Tag v-for="tag in post.fields.tags" :key="tag" :name="tag"/>
             <div class="content">
-              <p class="subtitle">{{ post.fields.description }}</p>
+              <p class="subtitle">{{ post.fields.summary }}</p>
             </div>
           </div>
         </div>

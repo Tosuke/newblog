@@ -4,9 +4,9 @@
       <div class="hero-body">
           <div class="container has-text-centered">
             <nuxt-link to="/">
-              <h1 class="title">Tosuke's blog</h1>
+              <h1 class="title">{{ title }}</h1>
             </nuxt-link>
-            <h2 class="subtitle">役に立(つ/たない)技術情報やポエム</h2>
+            <h2 class="subtitle">{{ subtitle }}</h2>
           </div>
      </div>
     </section>
@@ -14,6 +14,13 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      title: process.env.TITLE,
+      subtitle: process.env.SUBTITLE
+    }
+  }
+}
 </script>
 

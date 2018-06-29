@@ -16,6 +16,6 @@ export const defaultPostQuery = {
     'fields.tags',
     'fields.author',
     'fields.heroImage',
-    'fields.description'
+    'fields.summary'
   ].join(',')
 }

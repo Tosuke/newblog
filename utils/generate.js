@@ -13,41 +13,103 @@ const client = contentful.createClient({
   accessToken: process.env.CF_ACCESS_TOKEN
 })
 
+main().catch(err => console.error(err))
+
 async function main() {
   const result = await client.getEntries({
-    'content_type': 'post',
-    order: 'sys.createdAt',
+    content_type: 'post',
+    order: '-sys.updatedAt',
     limit: 1000
   })
   const posts = result.items
 
   const tasks = []
 
-  tasks.push(promisify(fs.writeFile)('posts.json', JSON.stringify(posts), 'utf8'))
-  
-  if (!await promisify(fs.exists)('assets/posts')) {
-    await promisify(fs.mkdir)('assets/posts')
+  tasks.push(
+    promisify(fs.writeFile)('posts.json', JSON.stringify(posts), 'utf8')
+  )
+
+  await Promise.all(
+    ['assets/posts', 'static/feed'].map(async path => {
+      if (!(await promisify(fs.exists)(path))) {
+        await promisify(fs.mkdir)(path)
+      }
+    })
+  )
+
+  const atomEntries = []
+
+  for (const post of posts) {
+    console.log(post.fields.slug)
+    tasks.push(
+      writeFile(
+        `assets/posts/${post.fields.slug}.md`,
+        post.fields.content,
+        'utf8'
+      )
+    )
+    tasks.push(
+      writeFile(
+        `assets/posts/${post.fields.slug}.json`,
+        JSON.stringify(sanitizePost(post)),
+        'utf8'
+      )
+    )
+    atomEntries.push(generateAtomEntry(post))
   }
 
-  for(const post of posts) {
-    console.log(post.fields.slug)
-    tasks.push(writeFile(`assets/posts/${post.fields.slug}.md`, post.fields.body, 'utf8'))
-    const postObj = {
-      sys: {
-        createdAt: post.sys.createdAt
-      },
-      fields: {
-        title: post.fields.title,
-        tags: post.fields.tags,
-        author: post.fields.author,
-        heroImage: post.fields.heroImage,
-        description: post.fields.description
-      }
-    }
-    tasks.push(writeFile(`assets/posts/${post.fields.slug}.json`, JSON.stringify(postObj), 'utf8'))
-  }
+  const atomFeed = generateAtomFeed(
+    atomEntries,
+    posts[0].fields.author.fields.name,
+    posts[0].sys.updatedAt
+  )
+  tasks.push(writeFile('static/feed/atom.xml', atomFeed, 'utf8'))
 
   await Promise.all(tasks)
 }
 
-main().catch(err => console.error(err))
+function sanitizePost(post) {
+  return {
+    sys: {
+      createdAt: post.sys.createdAt
+    },
+    fields: {
+      title: post.fields.title,
+      tags: post.fields.tags,
+      author: post.fields.author,
+      heroImage: post.fields.heroImage,
+      summary: post.fields.summary
+    }
+  }
+}
+
+function generateAtomEntry(post) {
+  const root = `https://${process.env.HOST}`
+  const id = `tag:${process.env.HOST},${post.sys.createdAt}:${post.fields.slug}`
+
+  return `
+<entry>
+  <title>${post.fields.title}</title>
+  <link rel="${root}/posts/${post.fields.slug}" rel="alternate"/>
+  <id>${id}</id>
+  <published>${post.sys.createdAt}</published>
+  <updated>${post.sys.updatedAt}</updated>
+  <summary>${post.fields.summary}</summary>
+</entry>
+  `
+}
+
+function generateAtomFeed(entries, aurhorName, updatedAt) {
+  const root = `https://${process.env.HOST}`
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+  <title>${process.env.TITLE}</title>
+  <subtitle>${process.env.SUBTITLE}</subtitle>
+  <link rel="${root}" rel="alternate"/>
+  <author><name>${aurhorName}</name></author>
+  <updated>${updatedAt}</updated>
+
+  ${entries.join('')}
+</feed>
+  `
+}
