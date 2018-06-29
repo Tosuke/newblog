@@ -13,7 +13,7 @@ export default {
       { hid: 'description', name: 'description', content: 'Tosuke&apos;s blog' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
       /*{
         rel: 'stylesheet',
         href:
@@ -29,6 +29,30 @@ export default {
   css: ['bulma', '~/assets/css/font.css'],
 
   env: process.env,
+
+  /*
+  ** Router configuration
+  */
+  router: {
+    scrollBehavior(to, from, savedPosition) {
+      let position = false
+
+      if (to.matched.length < 2) {
+        position = { x: 0, y: 0 }
+      } else if (
+        to.matched.some(r => r.components.default.options.scrollToTop)
+      ) {
+        position = { x: 0, y: 0 }
+      }
+
+      if (savedPosition) {
+        position = savedPosition
+      }
+
+      return position
+    }
+  },
+
   /*
   ** Build configuration
   */
@@ -53,7 +77,7 @@ export default {
         test: /\.md$/,
         use: ['vue-loader', require.resolve('./utils/markdownLoader')]
       })
-    },
+    }
   },
 
   generate: {
