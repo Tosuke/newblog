@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section container">
     <article-list :posts="posts"/>
   </section>
 </template>

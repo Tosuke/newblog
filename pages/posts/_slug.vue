@@ -2,6 +2,7 @@
   <section class="section">
     <div class="container">
       <header class="post-header">
+        <p class="has-text-grey-dark is-size-5">{{ createdAt }}</p>
         <h1 class="title is-2">{{ title }}</h1>
         <Tag v-for="tag in tags" :key="tag" :name="tag"/>
       </header>
@@ -16,6 +17,7 @@
 import Tag from '~/components/Tag.vue'
 import client from '~/plugins/contentful'
 import { get } from '~/plugins/contentCache'
+import formatDate from '~/plugins/formatDate'
 
 export default {
   components: {
@@ -40,7 +42,7 @@ export default {
       title: entry.fields.title,
       summary: entry.fields.summary,
       tags: entry.fields.tags,
-      createdAt: entry.sys.createdAt,
+      createdAt: formatDate(entry.sys.createdAt),
       heroImage: entry.fields.heroImage,
       slug
     }
@@ -75,11 +77,15 @@ export default {
           property: 'og:description',
           content: this.summary
         },
-        ...(this.heroImage ? [{
-          hid: 'og:image',
-          property: 'og:image',
-          content: 'https:' + this.heroImage.fields.file.url
-        }] : [])
+        ...(this.heroImage
+          ? [
+              {
+                hid: 'og:image',
+                property: 'og:image',
+                content: 'https:' + this.heroImage.fields.file.url
+              }
+            ]
+          : [])
       ]
     }
   }
@@ -90,7 +96,7 @@ export default {
 
 <style scoped>
 .post-header {
-  margin: 1rem;
+  margin: 0.75rem;
   padding-bottom: 0.2rem;
   border-bottom: 1px solid #ccc;
 }
