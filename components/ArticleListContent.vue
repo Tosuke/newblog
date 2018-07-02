@@ -1,17 +1,17 @@
 <template>
   <div class="card article">
     <div class="card-content">
-      <p class="has-text-grey-dark is-size-5">{{ createdAt }}</p>
-      <turbo-link :to="`/posts/${slug}`">
-        <h1 class="title">{{ title }}</h1>
+      <p class="has-text-grey-dark is-size-5">{{ post.sys.createdAt | formatDate }}</p>
+      <turbo-link :to="`/posts/${post.fields.slug}`">
+        <h1 class="title">{{ post.fields.title }}</h1>
       </turbo-link>
-      <Tag v-for="tag in tags"  :key="tag" :name="tag"/>
+      <Tag v-for="tag in post.fields.tags"  :key="tag" :name="tag"/>
       <div class="media summary">
-        <figure v-if="heroImage" class="media-left image hero-image">
-          <contentful-image :file="heroImage" sizes="6rem"/>
+        <figure v-if="post.fields.heroImage" class="media-left image hero-image">
+          <contentful-image :file="post.fields.heroImage" sizes="6rem"/>
         </figure>
         <div class="media-content content">
-          <p class="subtitle">{{ summary }}</p>
+          <p class="subtitle">{{ post.fields.summary }}</p>
         </div>
       </div>
     </div>
@@ -30,27 +30,10 @@ export default {
     TurboLink,
     ContentfulImage
   },
+  filters: {
+    formatDate
+  },
   props: ['post'],
-  computed: {
-    slug() {
-      return this.post.fields.slug
-    },
-    title() {
-      return this.post.fields.title
-    },
-    createdAt() {
-      return formatDate(this.post.sys.createdAt)
-    },
-    tags() {
-      return this.post.fields.tags
-    },
-    heroImage() {
-      return this.post.fields.heroImage
-    },
-    summary() {
-      return this.post.fields.summary
-    }
-  }
 }
 </script>
 

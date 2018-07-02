@@ -1,14 +1,8 @@
-<template>
-  <nuxt-link :to="`/tags/${name}`">
-    <span class="tag is-primary margin">{{ name }}</span>
+<template functional>
+  <nuxt-link :to="`/tags/${props.name}`">
+    <span class="tag is-primary margin">{{ props.name }}</span>
   </nuxt-link>
 </template>
-
-<script>
-export default {
-  props: ['name']
-}
-</script>
 
 <style scoped>
 .margin {
