@@ -2,12 +2,12 @@
   <section class="section">
     <div class="container">
     <header class="post-header">
-      <p class="has-text-grey-dark has-text-weight-semibold is-size-6">{{ createdAt }}</p>
+      <p class="has-text-grey-dark is-size-6">{{ createdAt }}</p>
       <h1 class="has-text-weight-bold is-size-3">{{ title }}</h1>
       <h2 class="has-text-weight-semibold is-size-5">{{ summary }}</h2>
       <Tag v-for="tag in tags" :key="tag" :name="tag"/>
     </header>
-    <Content class="content is-small" :html="content"/>
+    <Content class="content" :html="content"/>
     </div>
   </section>
 </template>
