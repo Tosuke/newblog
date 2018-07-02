@@ -1,12 +1,13 @@
 <template>
   <section class="section">
     <div class="container">
-      <header class="post-header">
-        <p class="has-text-grey-dark is-size-5">{{ createdAt }}</p>
-        <h1 class="title is-2">{{ title }}</h1>
-        <Tag v-for="tag in tags" :key="tag" :name="tag"/>
-      </header>
-      <Content :html="content"/>
+    <header class="post-header">
+      <p class="has-text-grey-dark has-text-weight-semibold is-size-6">{{ createdAt }}</p>
+      <h1 class="has-text-weight-bold is-size-3">{{ title }}</h1>
+      <h2 class="has-text-weight-semibold is-size-5">{{ summary }}</h2>
+      <Tag v-for="tag in tags" :key="tag" :name="tag"/>
+    </header>
+    <Content class="content is-small" :html="content"/>
     </div>
   </section>
 </template>
@@ -92,8 +93,7 @@ export default {
 
 <style scoped>
 .post-header {
-  margin: 0.75rem;
-  padding-bottom: 0.2rem;
+  margin-bottom: 0.75rem;
   border-bottom: 1px solid #ccc;
 }
 </style>

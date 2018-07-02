@@ -36,8 +36,6 @@ export default {
     }
 
     const doc = parseHtml(ctx.props.html)
-    return h('div', ctx.data, [
-      h('div', { attrs: { class: 'content' } }, renderChildren(doc.body))
-    ])
+    return h('div', ctx.data, renderChildren(doc.body))
   }
 }

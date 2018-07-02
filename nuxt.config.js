@@ -67,7 +67,7 @@ export default {
   */
   loading: { color: '#3B8070' },
 
-  css: ['bulma', '~/assets/css/font.css'],
+  css: ['~/assets/css/bulma-custom.scss', '~/assets/css/font.css'],
 
   env: process.env,
 
