@@ -1,5 +1,7 @@
 import dotenv from './env'
 import * as contentful from 'contentful'
+import md from './markdown'
+import htmlMinifier from 'html-minifier'
 import fs from 'fs'
 import util from 'util'
 
@@ -30,7 +32,7 @@ async function main() {
   )
 
   await Promise.all(
-    ['assets/posts', 'static/feed'].map(async path => {
+    ['static/_', 'static/_/posts', 'static/feed'].map(async path => {
       if (!(await promisify(fs.exists)(path))) {
         await promisify(fs.mkdir)(path)
       }
@@ -43,14 +45,16 @@ async function main() {
     console.log(post.fields.slug)
     tasks.push(
       writeFile(
-        `assets/posts/${post.fields.slug}.md`,
-        post.fields.content,
+        `static/_/posts/${post.fields.slug}.html`,
+        htmlMinifier.minify(md.render(post.fields.content), {
+          conservativeCollapse: true
+        }),
         'utf8'
       )
     )
     tasks.push(
       writeFile(
-        `assets/posts/${post.fields.slug}.json`,
+        `static/_/posts/${post.fields.slug}.json`,
         JSON.stringify(sanitizePost(post)),
         'utf8'
       )
@@ -86,10 +90,10 @@ function sanitizePost(post) {
 function generateAtomEntry(post) {
   const padding = (n) => ('0000' + n).slice(-2)
 
-  const root = `https://${process.env.HOST}`
+  const root = process.env.URL
   const createdAt = new Date(post.sys.createdAt)
   const date = `${createdAt.getFullYear()}-${padding(createdAt.getMonth())}-${padding(createdAt.getDay())}`
-  const id = `tag:${process.env.HOST},${date}:${post.fields.slug}`
+  const id = `tag:${new URL(root).host},${date}:${post.fields.slug}`
 
   return `
 <entry>
@@ -104,7 +108,7 @@ function generateAtomEntry(post) {
 }
 
 function generateAtomFeed(entries, aurhorName, updatedAt) {
-  const root = `https://${process.env.HOST}`
+  const root = process.env.URL
   return `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
   <title>${process.env.TITLE}</title>
@@ -112,7 +116,7 @@ function generateAtomFeed(entries, aurhorName, updatedAt) {
   <link rel="alternate" href="${root}"/>
   <link rel="self" type="application/atom+xml" href="${root}/feed/atom.xml"/>
   <author><name>${aurhorName}</name></author>
-  <id>tag:${process.env.HOST},2018:feed</id>
+  <id>tag:${new URL(root).host},2018:feed</id>
   <updated>${updatedAt}</updated>
 
   ${entries.join('')}

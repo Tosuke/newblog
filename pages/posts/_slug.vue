@@ -6,37 +6,37 @@
         <h1 class="title is-2">{{ title }}</h1>
         <Tag v-for="tag in tags" :key="tag" :name="tag"/>
       </header>
-      <div class="content">
-        <component :is="component"/>
-      </div>
+      <Content :html="content"/>
     </div>
   </section>
 </template>
 
 <script>
 import Tag from '~/components/Tag.vue'
+import Content from '~/components/Content'
 import client from '~/plugins/contentful'
 import { get } from '~/plugins/contentCache'
 import formatDate from '~/plugins/formatDate'
 
+import axios from '~/plugins/axios'
+
 export default {
   components: {
-    Tag
+    Tag,
+    Content
+  },
+  validate({ params }) {
+    const slug = params.slug
+    return slug && /^[a-zA-Z0-9_\-]+$/.test(slug)
   },
   async asyncData({ params, ...ctx }) {
     const slug = params.slug
-    if (!slug) {
-      ctx.redirect('/')
-    }
 
-    const entry = await get(slug).meta.catch(() => {})
-
-    if (!entry) {
+    const { meta: entry, content } = await get(slug).catch(err => {
       ctx.error({
         statusCode: 404
       })
-      return
-    }
+    })
 
     return {
       title: entry.fields.title,
@@ -44,12 +44,8 @@ export default {
       tags: entry.fields.tags,
       createdAt: formatDate(entry.sys.createdAt),
       heroImage: entry.fields.heroImage,
-      slug
-    }
-  },
-  data() {
-    return {
-      component: get(this.$route.params.slug).component
+      slug,
+      content
     }
   },
   head() {
@@ -70,7 +66,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `https://${process.env.HOST}/posts/${this.slug}`
+          content: `${process.env.URL}/posts/${this.slug}`
         },
         {
           hid: 'og:description',

@@ -34,7 +34,7 @@ export default {
       {
         hid: 'og:url',
         property: 'og:url',
-        content: `https://${process.env.HOST}`
+        content: process.env.URL
       },
       {
         hid: 'og:description',
