@@ -2,7 +2,7 @@
   <section class="section">
     <div class="container">
     <header class="post-header">
-      <p class="has-text-grey-dark is-size-6">{{ createdAt }}</p>
+      <p class="has-text-grey-dark is-size-6">{{ createdAt | formatDate }}</p>
       <h1 class="has-text-weight-bold is-size-3">{{ title }}</h1>
       <h2 class="has-text-weight-semibold is-size-5">{{ summary }}</h2>
       <Tag v-for="tag in tags" :key="tag" :name="tag"/>
@@ -26,6 +26,9 @@ export default {
     Tag,
     Content
   },
+  filters: {
+    formatDate
+  },
   validate({ params }) {
     const slug = params.slug
     return slug && /^[a-zA-Z0-9_\-]+$/.test(slug)
@@ -43,7 +46,7 @@ export default {
       title: entry.fields.title,
       summary: entry.fields.summary,
       tags: entry.fields.tags,
-      createdAt: formatDate(entry.sys.createdAt),
+      createdAt: entry.sys.createdAt,
       heroImage: entry.fields.heroImage,
       slug,
       content
