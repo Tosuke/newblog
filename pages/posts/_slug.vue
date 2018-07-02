@@ -18,7 +18,7 @@ import client from '~/plugins/contentful'
 import { get } from '~/plugins/contentCache'
 import formatDate from '~/plugins/formatDate'
 
-import axios from '~/plugins/axios'
+import axios from 'axios'
 
 export default {
   components: {

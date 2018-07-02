@@ -1,4 +1,4 @@
-import axios from '~/plugins/axios'
+import axios from 'axios'
 
 let readFile
 if (process.server) {
