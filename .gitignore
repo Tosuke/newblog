@@ -9,7 +9,7 @@ npm-debug.log
 
 # Nuxt generate
 dist
-/assets/posts/**
+/static/_/**
 /static/feed/**
 /posts.json
 

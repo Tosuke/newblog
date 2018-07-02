@@ -15,12 +15,15 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bulma": "^0.7.1",
     "contentful": "^6.1.1",
     "dotenv-safe": "^5.0.1",
+    "html-minifier": "^3.5.17",
+    "jsdom": "^11.11.0",
     "markdown-it": "^8.4.1",
     "markdown-it-emoji": "^1.4.0",
-    "nuxt-edge": "^2.0.0-25500158.1b46a95",
+    "nuxt-edge": "^2.0.0-25507878.d98c983",
     "prismjs": "^1.15.0"
   },
   "devDependencies": {
