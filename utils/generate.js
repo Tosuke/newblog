@@ -4,6 +4,9 @@ import md from './markdown'
 import htmlMinifier from 'html-minifier'
 import fs from 'fs'
 import util from 'util'
+import url from 'url'
+
+const URL = url.URL
 
 const promisify = util.promisify
 const writeFile = promisify(fs.writeFile)
