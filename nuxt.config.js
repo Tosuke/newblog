@@ -112,12 +112,6 @@ export default {
           exclude: /(node_modules)/
         })
       }
-
-      // markdown as a vue component
-      config.module.rules.push({
-        test: /\.md$/,
-        use: ['vue-loader', require.resolve('./utils/markdownLoader')]
-      })
     }
   },
 
