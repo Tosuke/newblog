@@ -1,12 +1,12 @@
 <template>
   <div class="columns">
     <div class="column">
-      <a class="button is-info" target="_blank" :href="twitter">
+      <a class="button is-info" target="_blank" rel="noreferrer noopener" :href="twitter">
         <span class="icon">
           <icon name="brands/twitter"/>
         </span>
       </a>
-      <a class="button is-info" target="_blank" :href="mastodon">
+      <a class="button is-info" target="_blank" rel="noreferrer noopener" :href="mastodon">
         <span class="icon">
           <icon name="brands/mastodon"/>
         </span>
@@ -45,7 +45,7 @@ export default {
       return `https://mastportal.info/intent?text=${text}`
     },
     webshareIsAvailable() {
-      return navigator.share !== undefined
+      return !process.server && window.navigator.share !== undefined
     }
   },
   methods: {
