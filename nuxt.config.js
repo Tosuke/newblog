@@ -1,4 +1,6 @@
 import dotenv from './utils/env'
+import nodeExternals from 'webpack-node-externals'
+
 dotenv.config()
 
 export default {
@@ -103,7 +105,7 @@ export default {
     /*
     ** Run ESLint on save
     */
-    extend(config, { isDev }) {
+    extend(config, { isDev, isServer }) {
       if (isDev && process.browser) {
         config.module.rules.push({
           enforce: 'pre',
@@ -112,7 +114,21 @@ export default {
           exclude: /(node_modules)/
         })
       }
+
+      if (isServer) {
+        config.externals = [
+          nodeExternals({
+            whitelist: [
+              /es6-promise|\.(?!(?:js|json)$).{1,5}$/i,
+              /\.css$/,
+              /\?vue&type=style/,
+              /^vue-awesome/
+            ]
+          })
+        ]
+      }
     }
+
   },
 
   generate: {
