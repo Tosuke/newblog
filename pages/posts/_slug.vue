@@ -1,13 +1,19 @@
 <template>
   <section class="section">
     <div class="container">
-    <header class="post-header">
-      <p class="has-text-grey-dark is-size-6">{{ createdAt | formatDate }}</p>
-      <h1 class="has-text-weight-bold is-size-3">{{ title }}</h1>
-      <h2 class="has-text-weight-semibold is-size-5">{{ summary }}</h2>
-      <Tag v-for="tag in tags" :key="tag" :name="tag"/>
-    </header>
-    <Content class="content" :html="content"/>
+      <header class="post-header">
+        <p class="has-text-grey-dark is-size-6">{{ createdAt | formatDate }}</p>
+        <h1 class="has-text-weight-bold is-size-3">{{ title }}</h1>
+        <h2 class="has-text-weight-semibold is-size-5">{{ summary }}</h2>
+        <Tag v-for="tag in tags" :key="tag" :name="tag"/>
+      </header>
+      <article>
+        <Content class="content" :html="content"/>
+      </article>
+      <footer class="post-footer">
+        <h2 class="title is-size-5">共有</h2>
+        <share-button :title="title" :url="url"/>
+      </footer>
     </div>
   </section>
 </template>
@@ -15,7 +21,7 @@
 <script>
 import Tag from '~/components/Tag.vue'
 import Content from '~/components/Content'
-import client from '~/plugins/contentful'
+import ShareButton from '~/components/ShareButton.vue'
 import { get } from '~/plugins/contentCache'
 import formatDate from '~/plugins/formatDate'
 
@@ -24,7 +30,8 @@ import axios from 'axios'
 export default {
   components: {
     Tag,
-    Content
+    Content,
+    ShareButton
   },
   filters: {
     formatDate
@@ -52,6 +59,11 @@ export default {
       content
     }
   },
+  computed: {
+    url() {
+      return `${process.env.URL}/posts/${this.slug}`
+    }
+  },
   head() {
     return {
       title: this.title,
@@ -70,7 +82,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `${process.env.URL}/posts/${this.slug}`
+          content: this.url
         },
         {
           hid: 'og:description',
@@ -98,6 +110,11 @@ export default {
 .post-header {
   margin-bottom: 0.75rem;
   border-bottom: 1px solid #ccc;
+}
+.post-footer {
+  margin-top: 0.75rem;
+  border-top: 1px solid #ccc;
+  padding-top: 0.75rem;
 }
 </style>
 
