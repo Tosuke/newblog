@@ -100,7 +100,7 @@ export default {
   ** Build configuration
   */
   build: {
-    cache: true,
+    // cache: true,
     parallel: true,
     /*
     ** Run ESLint on save
